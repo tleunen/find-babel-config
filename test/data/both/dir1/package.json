@@ -1,0 +1,5 @@
+{
+    "babel": {
+        "presets": ["fake-preset-packagejson"]
+    }
+}
