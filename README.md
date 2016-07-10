@@ -15,11 +15,15 @@ npm install --save find-babel-config
 // directory can be an absolute or relative path
 // If it's a relative path, it is relative to the current working directory (process.cwd())
 const directory = 'src';
-const { file, config } = findBabelConfig(directory);
-// file is the file in which the config is found
-console.log(file);
-// config is a JS plain object with the babel config
-console.log(config);
+const c = findBabelConfig(directory);
+// if c === null, the config wasn't found
+if (c) {
+    const { file, config } = c;
+    // file is the file in which the config is found
+    console.log(file);
+    // config is a JS plain object with the babel config
+    console.log(config);
+}
 ```
 
 A second parameter can be given to `findBabelConfig`, it specifies the `depth` of search. By default, this value is `Infinity` but you can set the value you want: `findBabelConfig('src', 10)`.
