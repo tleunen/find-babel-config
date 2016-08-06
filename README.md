@@ -11,14 +11,31 @@ npm install --save find-babel-config
 
 ## Usage
 
+### Async
+
 ```js
 // directory can be an absolute or relative path
 // If it's a relative path, it is relative to the current working directory (process.cwd())
 const directory = 'src';
-const c = findBabelConfig(directory);
+findBabelConfig(directory).then(({ file, config }) => {
+    if (file) {
+        // file is the file in which the config is found
+        console.log(file);
+        // config is a JS plain object with the babel config
+        console.log(config);
+    }
+});
+```
+
+### Sync
+
+```js
+// directory can be an absolute or relative path
+// If it's a relative path, it is relative to the current working directory (process.cwd())
+const directory = 'src';
+const { file, config } = findBabelConfig(directory);
 // if c === null, the config wasn't found
-if (c) {
-    const { file, config } = c;
+if (file) {
     // file is the file in which the config is found
     console.log(file);
     // config is a JS plain object with the babel config
