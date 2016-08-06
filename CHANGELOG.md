@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.0"></a>
+# [1.0.0](https://github.com/tleunen/find-babel-config/compare/v0.1.1...v1.0.0) (2016-08-06)
+
+
+### Features
+
+* Add support for async lookup ([ca2f592](https://github.com/tleunen/find-babel-config/commit/ca2f592))
+
+
+### BREAKING CHANGES
+
+* The default function is now async and uses a Promise. And the function doesn't
+return null when the config is not found. Instead, an object { file: null,
+config: null } is returned.
+
+
+
 <a name="0.1.1"></a>
 ## [0.1.1](https://github.com/tleunen/find-babel-config/compare/v0.1.0...v0.1.1) (2016-07-10)
 
