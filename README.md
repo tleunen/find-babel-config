@@ -1,5 +1,5 @@
 # find-babel-config
-![npm][npm-version-image] [![Build Status][ci-image]][ci-url] [![Coverage Status][coverage-image]][coverage-url]
+[![npm][npm-version-image]][npm-url] [![Build Status][ci-image]][ci-url] [![Coverage Status][coverage-image]][coverage-url]
 
 Helper function to retrieve the closest Babel configuration from a specific directory.
 
@@ -54,3 +54,4 @@ MIT, see [LICENSE.md](/LICENSE.md) for details.
 [coverage-image]: https://codecov.io/gh/tleunen/find-babel-config/branch/master/graph/badge.svg
 [coverage-url]: https://codecov.io/gh/tleunen/find-babel-config
 [npm-version-image]: https://img.shields.io/npm/v/find-babel-config.svg
+[npm-url]: https://www.npmjs.com/package/find-babel-config
