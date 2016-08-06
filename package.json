@@ -21,15 +21,15 @@
   },
   "devDependencies": {
     "babel-cli": "^6.11.4",
-    "babel-preset-es2015": "^6.9.0",
-    "babel-register": "^6.11.5",
+    "babel-preset-es2015": "^6.13.2",
+    "babel-register": "^6.11.6",
     "chai": "^3.5.0",
-    "eslint": "^3.1.1",
-    "eslint-config-airbnb-base": "^5.0.0",
-    "eslint-plugin-import": "^1.11.1",
-    "lodash": "^4.14.0",
-    "mocha": "^3.0.0",
-    "nyc": "^7.0.0",
+    "eslint": "^3.2.2",
+    "eslint-config-airbnb-base": "^5.0.1",
+    "eslint-plugin-import": "^1.12.0",
+    "lodash": "^4.14.1",
+    "mocha": "^3.0.1",
+    "nyc": "^7.1.0",
     "standard-version": "^2.4.0"
   },
   "scripts": {
@@ -37,7 +37,7 @@
     "pretest": "npm run lint",
     "test": "nyc npm run test:suite",
     "test:watch": "npm run test:suite -- -w",
-    "test:suite": "mocha --compilers js:babel-register",
+    "test:suite": "mocha --require babel-register",
     "compile": "babel src --out-dir lib",
     "prepublish": "npm run compile",
     "release": "standard-version"
