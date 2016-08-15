@@ -33,7 +33,7 @@ findBabelConfig(directory).then(({ file, config }) => {
 // directory can be an absolute or relative path
 // If it's a relative path, it is relative to the current working directory (process.cwd())
 const directory = 'src';
-const { file, config } = findBabelConfig(directory);
+const { file, config } = findBabelConfig.sync(directory);
 // if c === null, the config wasn't found
 if (file) {
     // file is the file in which the config is found
