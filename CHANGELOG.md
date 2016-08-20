@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.0.1"></a>
+## [1.0.1](https://github.com/tleunen/find-babel-config/compare/v1.0.0...v1.0.1) (2016-08-20)
+
+
+### Bug Fixes
+
+* Fix async call with depth 0 ([ddb684f](https://github.com/tleunen/find-babel-config/commit/ddb684f))
+
+
+
 <a name="1.0.0"></a>
 # [1.0.0](https://github.com/tleunen/find-babel-config/compare/v0.1.1...v1.0.0) (2016-08-06)
 
