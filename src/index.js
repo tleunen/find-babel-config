@@ -10,7 +10,9 @@ const PACKAGE_FILENAME = 'package.json';
 const nullConf = { file: null, config: null };
 
 function asyncFind(resolve, dir, depth) {
-    if (!depth) resolve(nullConf);
+    if (depth < 0) {
+        return resolve(nullConf);
+    }
 
     const babelrc = path.join(dir, BABELRC_FILENAME);
     return pathExists(babelrc).then(exists => {

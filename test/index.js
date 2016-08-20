@@ -13,7 +13,7 @@ const findBabelConfig = require('../src');
 describe('find-babel-config', () => {
     describe('async', () => {
         describe('babelrc', () => {
-            it('should return the config in the specified directory', () =>
+            it('should return the config in the direct directory', () =>
                 findBabelConfig('test/data/babelrc').then(({ file, config }) => {
                     expect(file).to.equal(path.join(process.cwd(), 'test/data/babelrc/.babelrc'));
                     expect(config).to.eql({ presets: ['fake-preset-babelrc'] });
@@ -36,7 +36,7 @@ describe('find-babel-config', () => {
         });
 
         describe('package.json', () => {
-            it('should return the config in the specified directory', () =>
+            it('should return the config in the direct directory', () =>
                 findBabelConfig('test/data/packagejson').then(({ file, config }) => {
                     expect(file).to.equal(path.join(process.cwd(), 'test/data/packagejson/package.json'));
                     expect(config).to.eql({ presets: ['fake-preset-packagejson'] });
@@ -81,7 +81,30 @@ describe('find-babel-config', () => {
             );
         });
 
-        describe('no config found...', () => {
+        describe('with depth', () => {
+            it('should check only the direct directory with a depth 0', () =>
+                findBabelConfig('test/data/babelrc/dir1/dir2/dir3/dir4', 0).then(({ file, config }) => {
+                    expect(file).to.equal(null);
+                    expect(config).to.equal(null);
+                })
+            );
+
+            it('should return null when depth is reached without finding a babelrc file', () =>
+                findBabelConfig('test/data/babelrc/dir1/dir2/dir3/dir4/dir5', 1).then(({ file, config }) => {
+                    expect(file).to.equal(null);
+                    expect(config).to.equal(null);
+                })
+            );
+
+            it('should return null when depth is reached without finding package.json', () =>
+                findBabelConfig('test/data/packagejson/dir1/dir2/dir3/dir4/dir5/dir6/dir7/dir8', 3).then(({ file, config }) => {
+                    expect(file).to.equal(null);
+                    expect(config).to.equal(null);
+                })
+            );
+        });
+
+        describe('edge cases...', () => {
             it('should return null when the path is empty', () =>
                 findBabelConfig('').then(({ file, config }) => {
                     expect(file).to.equal(null);
@@ -91,20 +114,6 @@ describe('find-babel-config', () => {
 
             it('should return null when no config is found until / is reached', () =>
                 findBabelConfig('/sth/else/that/doesnt/exist').then(({ file, config }) => {
-                    expect(file).to.equal(null);
-                    expect(config).to.equal(null);
-                })
-            );
-
-            it('should return null when depth is found without finding a babelrc file', () =>
-                findBabelConfig('test/data/babelrc/dir1/dir2/dir3/dir4/dir5', 1).then(({ file, config }) => {
-                    expect(file).to.equal(null);
-                    expect(config).to.equal(null);
-                })
-            );
-
-            it('should return null when depth is found without finding package.json', () =>
-                findBabelConfig('test/data/packagejson/dir1/dir2/dir3/dir4/dir5/dir6/dir7/dir8', 3).then(({ file, config }) => {
                     expect(file).to.equal(null);
                     expect(config).to.equal(null);
                 })
@@ -173,7 +182,27 @@ describe('find-babel-config', () => {
             });
         });
 
-        describe('no config found...', () => {
+        describe('with depth', () => {
+            it('should check only the direct directory with a depth 0', () => {
+                const { file, config } = findBabelConfig.sync('test/data/babelrc/dir1/dir2/dir3/dir4', 0);
+                expect(file).to.equal(null);
+                expect(config).to.equal(null);
+            });
+
+            it('should return null when depth is reached without finding a babelrc file', () => {
+                const { file, config } = findBabelConfig.sync('test/data/babelrc/dir1/dir2/dir3/dir4/dir5', 1);
+                expect(file).to.equal(null);
+                expect(config).to.equal(null);
+            });
+
+            it('should return null when depth is reached without finding package.json', () => {
+                const { file, config } = findBabelConfig.sync('test/data/packagejson/dir1/dir2/dir3/dir4/dir5/dir6/dir7/dir8', 3);
+                expect(file).to.equal(null);
+                expect(config).to.equal(null);
+            });
+        });
+
+        describe('edge cases...', () => {
             it('should return null when the path is empty', () => {
                 const { file, config } = findBabelConfig.sync('');
                 expect(file).to.equal(null);
@@ -182,18 +211,6 @@ describe('find-babel-config', () => {
 
             it('should return null when no config is found until / is reached', () => {
                 const { file, config } = findBabelConfig.sync('/sth/else/that/doesnt/exist');
-                expect(file).to.equal(null);
-                expect(config).to.equal(null);
-            });
-
-            it('should return null when depth is found without finding a babelrc file', () => {
-                const { file, config } = findBabelConfig.sync('test/data/babelrc/dir1/dir2/dir3/dir4/dir5', 1);
-                expect(file).to.equal(null);
-                expect(config).to.equal(null);
-            });
-
-            it('should return null when depth is found without finding package.json', () => {
-                const { file, config } = findBabelConfig.sync('test/data/packagejson/dir1/dir2/dir3/dir4/dir5/dir6/dir7/dir8', 3);
                 expect(file).to.equal(null);
                 expect(config).to.equal(null);
             });
