@@ -105,9 +105,11 @@ module.exports.sync = function findBabelConfigSync(start, depth = INFINITY) {
             }
         }
 
-        if (loopLeft-- === 0) {
+        if (loopLeft === 0) {
             return nullConf;
         }
+
+        loopLeft -= 1;
     } while (dir !== (dir = path.dirname(dir)));
 
     return nullConf;
