@@ -30,7 +30,7 @@
     "eslint-plugin-import": "^1.14.0",
     "mocha": "^3.0.2",
     "nyc": "^8.1.0",
-    "standard-version": "^2.4.0"
+    "standard-version": "^3.0.0"
   },
   "scripts": {
     "lint": "eslint src test",
