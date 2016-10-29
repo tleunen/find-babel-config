@@ -15,7 +15,7 @@ function asyncFind(resolve, dir, depth) {
     }
 
     const babelrc = path.join(dir, BABELRC_FILENAME);
-    return pathExists(babelrc).then(exists => {
+    return pathExists(babelrc).then((exists) => {
         if (exists) {
             fs.readFile(babelrc, 'utf8', (err, data) => {
                 if (!err) {
@@ -27,10 +27,10 @@ function asyncFind(resolve, dir, depth) {
             });
         }
         return exists;
-    }).then(exists => {
+    }).then((exists) => {
         if (!exists) {
             const packageFile = path.join(dir, PACKAGE_FILENAME);
-            return pathExists(packageFile).then(ex => {
+            return pathExists(packageFile).then((ex) => {
                 if (ex) {
                     fs.readFile(packageFile, 'utf8', (err, data) => {
                         const packageJson = JSON.parse(data);
@@ -45,7 +45,7 @@ function asyncFind(resolve, dir, depth) {
             });
         }
         return exists;
-    }).then(exists => {
+    }).then((exists) => {
         if (!exists) {
             const nextDir = path.dirname(dir);
             if (nextDir === dir) {
@@ -66,7 +66,7 @@ module.exports = function findBabelConfig(start, depth = INFINITY) {
         ? start
         : path.join(process.cwd(), start);
 
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
         asyncFind(resolve, dir, depth);
     });
 };
