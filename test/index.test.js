@@ -1,13 +1,5 @@
-/* eslint-env mocha */
-/*
-eslint import/no-extraneous-dependencies: [2, {
-  devDependencies: true,
-  optionalDependencies: false,
-}]
-*/
+/* eslint-env jest */
 const path = require('path');
-const expect = require('chai').expect;
-
 const findBabelConfig = require('../src');
 
 describe('find-babel-config', () => {
@@ -15,22 +7,22 @@ describe('find-babel-config', () => {
         describe('babelrc', () => {
             it('should return the config in the direct directory', () =>
                 findBabelConfig('test/data/babelrc').then(({ file, config }) => {
-                    expect(file).to.equal(path.join(process.cwd(), 'test/data/babelrc/.babelrc'));
-                    expect(config).to.eql({ presets: ['fake-preset-babelrc'] });
+                    expect(file).toBe(path.join(process.cwd(), 'test/data/babelrc/.babelrc'));
+                    expect(config).toEqual({ presets: ['fake-preset-babelrc'] });
                 })
             );
 
             it('should return the config in the parent directory', () =>
                 findBabelConfig(path.join(process.cwd(), 'test/data/babelrc/dir1')).then(({ file, config }) => {
-                    expect(file).to.equal(path.join(process.cwd(), 'test/data/babelrc/.babelrc'));
-                    expect(config).to.eql({ presets: ['fake-preset-babelrc'] });
+                    expect(file).toBe(path.join(process.cwd(), 'test/data/babelrc/.babelrc'));
+                    expect(config).toEqual({ presets: ['fake-preset-babelrc'] });
                 })
             );
 
             it('should return the first config found in the parents', () =>
                 findBabelConfig('test/data/babelrc/dir1/dir2/dir3/dir4/dir5').then(({ file, config }) => {
-                    expect(file).to.equal(path.join(process.cwd(), 'test/data/babelrc/dir1/dir2/dir3/.babelrc'));
-                    expect(config).to.eql({ presets: ['fake-preset-dir3-babelrc'] });
+                    expect(file).toBe(path.join(process.cwd(), 'test/data/babelrc/dir1/dir2/dir3/.babelrc'));
+                    expect(config).toEqual({ presets: ['fake-preset-dir3-babelrc'] });
                 })
             );
         });
@@ -38,29 +30,29 @@ describe('find-babel-config', () => {
         describe('package.json', () => {
             it('should return the config in the direct directory', () =>
                 findBabelConfig('test/data/packagejson').then(({ file, config }) => {
-                    expect(file).to.equal(path.join(process.cwd(), 'test/data/packagejson/package.json'));
-                    expect(config).to.eql({ presets: ['fake-preset-packagejson'] });
+                    expect(file).toBe(path.join(process.cwd(), 'test/data/packagejson/package.json'));
+                    expect(config).toEqual({ presets: ['fake-preset-packagejson'] });
                 })
             );
 
             it('should return the config in the parent directory', () =>
                 findBabelConfig(path.join(process.cwd(), 'test/data/packagejson/dir1')).then(({ file, config }) => {
-                    expect(file).to.equal(path.join(process.cwd(), 'test/data/packagejson/package.json'));
-                    expect(config).to.eql({ presets: ['fake-preset-packagejson'] });
+                    expect(file).toBe(path.join(process.cwd(), 'test/data/packagejson/package.json'));
+                    expect(config).toEqual({ presets: ['fake-preset-packagejson'] });
                 })
             );
 
             it('should not return the package.json if no babel config is found inside', () =>
                 findBabelConfig('test/data/packagejson/dir1/dir2/dir3/dir4/dir5').then(({ file, config }) => {
-                    expect(file).to.equal(path.join(process.cwd(), 'test/data/packagejson/dir1/dir2/dir3/package.json'));
-                    expect(config).to.eql({ presets: ['fake-preset-dir3-packagejson'] });
+                    expect(file).toBe(path.join(process.cwd(), 'test/data/packagejson/dir1/dir2/dir3/package.json'));
+                    expect(config).toEqual({ presets: ['fake-preset-dir3-packagejson'] });
                 })
             );
 
             it('should return the first config found in the parents', () =>
                 findBabelConfig('test/data/packagejson/dir1/dir2/dir3/dir4/dir5').then(({ file, config }) => {
-                    expect(file).to.equal(path.join(process.cwd(), 'test/data/packagejson/dir1/dir2/dir3/package.json'));
-                    expect(config).to.eql({ presets: ['fake-preset-dir3-packagejson'] });
+                    expect(file).toBe(path.join(process.cwd(), 'test/data/packagejson/dir1/dir2/dir3/package.json'));
+                    expect(config).toEqual({ presets: ['fake-preset-dir3-packagejson'] });
                 })
             );
         });
@@ -68,15 +60,15 @@ describe('find-babel-config', () => {
         describe('both files', () => {
             it('should return the first babel config in package.json', () =>
                 findBabelConfig('test/data/both/dir1/dir2/dir3').then(({ file, config }) => {
-                    expect(file).to.equal(path.join(process.cwd(), 'test/data/both/dir1/package.json'));
-                    expect(config).to.eql({ presets: ['fake-preset-packagejson'] });
+                    expect(file).toBe(path.join(process.cwd(), 'test/data/both/dir1/package.json'));
+                    expect(config).toEqual({ presets: ['fake-preset-packagejson'] });
                 })
             );
 
             it('should return the first babel config in babelrc', () =>
                 findBabelConfig('test/data/both/dir1/dir2/dir3/dir4/dir5').then(({ file, config }) => {
-                    expect(file).to.equal(path.join(process.cwd(), 'test/data/both/dir1/dir2/dir3/dir4/.babelrc'));
-                    expect(config).to.eql({ presets: ['fake-preset-dir5-babelrc'] });
+                    expect(file).toBe(path.join(process.cwd(), 'test/data/both/dir1/dir2/dir3/dir4/.babelrc'));
+                    expect(config).toEqual({ presets: ['fake-preset-dir5-babelrc'] });
                 })
             );
         });
@@ -84,22 +76,22 @@ describe('find-babel-config', () => {
         describe('with depth', () => {
             it('should check only the direct directory with a depth 0', () =>
                 findBabelConfig('test/data/babelrc/dir1/dir2/dir3/dir4', 0).then(({ file, config }) => {
-                    expect(file).to.equal(null);
-                    expect(config).to.equal(null);
+                    expect(file).toBe(null);
+                    expect(config).toBe(null);
                 })
             );
 
             it('should return null when depth is reached without finding a babelrc file', () =>
                 findBabelConfig('test/data/babelrc/dir1/dir2/dir3/dir4/dir5', 1).then(({ file, config }) => {
-                    expect(file).to.equal(null);
-                    expect(config).to.equal(null);
+                    expect(file).toBe(null);
+                    expect(config).toBe(null);
                 })
             );
 
             it('should return null when depth is reached without finding package.json', () =>
                 findBabelConfig('test/data/packagejson/dir1/dir2/dir3/dir4/dir5/dir6/dir7/dir8', 3).then(({ file, config }) => {
-                    expect(file).to.equal(null);
-                    expect(config).to.equal(null);
+                    expect(file).toBe(null);
+                    expect(config).toBe(null);
                 })
             );
         });
@@ -107,15 +99,15 @@ describe('find-babel-config', () => {
         describe('edge cases...', () => {
             it('should return null when the path is empty', () =>
                 findBabelConfig('').then(({ file, config }) => {
-                    expect(file).to.equal(null);
-                    expect(config).to.equal(null);
+                    expect(file).toBe(null);
+                    expect(config).toBe(null);
                 })
             );
 
             it('should return null when no config is found until / is reached', () =>
                 findBabelConfig('/sth/else/that/doesnt/exist').then(({ file, config }) => {
-                    expect(file).to.equal(null);
-                    expect(config).to.equal(null);
+                    expect(file).toBe(null);
+                    expect(config).toBe(null);
                 })
             );
         });
@@ -125,94 +117,94 @@ describe('find-babel-config', () => {
         describe('babelrc', () => {
             it('should return the config in the specified directory', () => {
                 const { file, config } = findBabelConfig.sync('test/data/babelrc');
-                expect(file).to.equal(path.join(process.cwd(), 'test/data/babelrc/.babelrc'));
-                expect(config).to.eql({ presets: ['fake-preset-babelrc'] });
+                expect(file).toBe(path.join(process.cwd(), 'test/data/babelrc/.babelrc'));
+                expect(config).toEqual({ presets: ['fake-preset-babelrc'] });
             });
 
             it('should return the config in the parent directory', () => {
                 const { file, config } = findBabelConfig.sync(path.join(process.cwd(), 'test/data/babelrc/dir1'));
-                expect(file).to.equal(path.join(process.cwd(), 'test/data/babelrc/.babelrc'));
-                expect(config).to.eql({ presets: ['fake-preset-babelrc'] });
+                expect(file).toBe(path.join(process.cwd(), 'test/data/babelrc/.babelrc'));
+                expect(config).toEqual({ presets: ['fake-preset-babelrc'] });
             });
 
             it('should return the first config found in the parents', () => {
                 const { file, config } = findBabelConfig.sync('test/data/babelrc/dir1/dir2/dir3/dir4/dir5');
-                expect(file).to.equal(path.join(process.cwd(), 'test/data/babelrc/dir1/dir2/dir3/.babelrc'));
-                expect(config).to.eql({ presets: ['fake-preset-dir3-babelrc'] });
+                expect(file).toBe(path.join(process.cwd(), 'test/data/babelrc/dir1/dir2/dir3/.babelrc'));
+                expect(config).toEqual({ presets: ['fake-preset-dir3-babelrc'] });
             });
         });
 
         describe('package.json', () => {
             it('should return the config in the specified directory', () => {
                 const { file, config } = findBabelConfig.sync('test/data/packagejson');
-                expect(file).to.equal(path.join(process.cwd(), 'test/data/packagejson/package.json'));
-                expect(config).to.eql({ presets: ['fake-preset-packagejson'] });
+                expect(file).toBe(path.join(process.cwd(), 'test/data/packagejson/package.json'));
+                expect(config).toEqual({ presets: ['fake-preset-packagejson'] });
             });
 
             it('should return the config in the parent directory', () => {
                 const { file, config } = findBabelConfig.sync(path.join(process.cwd(), 'test/data/packagejson/dir1'));
-                expect(file).to.equal(path.join(process.cwd(), 'test/data/packagejson/package.json'));
-                expect(config).to.eql({ presets: ['fake-preset-packagejson'] });
+                expect(file).toBe(path.join(process.cwd(), 'test/data/packagejson/package.json'));
+                expect(config).toEqual({ presets: ['fake-preset-packagejson'] });
             });
 
             it('should not return the package.json if no babel config is found inside', () => {
                 const { file, config } = findBabelConfig.sync('test/data/packagejson/dir1/dir2/dir3/dir4/dir5');
-                expect(file).to.equal(path.join(process.cwd(), 'test/data/packagejson/dir1/dir2/dir3/package.json'));
-                expect(config).to.eql({ presets: ['fake-preset-dir3-packagejson'] });
+                expect(file).toBe(path.join(process.cwd(), 'test/data/packagejson/dir1/dir2/dir3/package.json'));
+                expect(config).toEqual({ presets: ['fake-preset-dir3-packagejson'] });
             });
 
             it('should return the first config found in the parents', () => {
                 const { file, config } = findBabelConfig.sync('test/data/packagejson/dir1/dir2/dir3/dir4/dir5');
-                expect(file).to.equal(path.join(process.cwd(), 'test/data/packagejson/dir1/dir2/dir3/package.json'));
-                expect(config).to.eql({ presets: ['fake-preset-dir3-packagejson'] });
+                expect(file).toBe(path.join(process.cwd(), 'test/data/packagejson/dir1/dir2/dir3/package.json'));
+                expect(config).toEqual({ presets: ['fake-preset-dir3-packagejson'] });
             });
         });
 
         describe('both files', () => {
             it('should return the first babel config in package.json', () => {
                 const { file, config } = findBabelConfig.sync('test/data/both/dir1/dir2/dir3');
-                expect(file).to.equal(path.join(process.cwd(), 'test/data/both/dir1/package.json'));
-                expect(config).to.eql({ presets: ['fake-preset-packagejson'] });
+                expect(file).toBe(path.join(process.cwd(), 'test/data/both/dir1/package.json'));
+                expect(config).toEqual({ presets: ['fake-preset-packagejson'] });
             });
 
             it('should return the first babel config in babelrc', () => {
                 const { file, config } = findBabelConfig.sync('test/data/both/dir1/dir2/dir3/dir4/dir5');
-                expect(file).to.equal(path.join(process.cwd(), 'test/data/both/dir1/dir2/dir3/dir4/.babelrc'));
-                expect(config).to.eql({ presets: ['fake-preset-dir5-babelrc'] });
+                expect(file).toBe(path.join(process.cwd(), 'test/data/both/dir1/dir2/dir3/dir4/.babelrc'));
+                expect(config).toEqual({ presets: ['fake-preset-dir5-babelrc'] });
             });
         });
 
         describe('with depth', () => {
             it('should check only the direct directory with a depth 0', () => {
                 const { file, config } = findBabelConfig.sync('test/data/babelrc/dir1/dir2/dir3/dir4', 0);
-                expect(file).to.equal(null);
-                expect(config).to.equal(null);
+                expect(file).toBe(null);
+                expect(config).toBe(null);
             });
 
             it('should return null when depth is reached without finding a babelrc file', () => {
                 const { file, config } = findBabelConfig.sync('test/data/babelrc/dir1/dir2/dir3/dir4/dir5', 1);
-                expect(file).to.equal(null);
-                expect(config).to.equal(null);
+                expect(file).toBe(null);
+                expect(config).toBe(null);
             });
 
             it('should return null when depth is reached without finding package.json', () => {
                 const { file, config } = findBabelConfig.sync('test/data/packagejson/dir1/dir2/dir3/dir4/dir5/dir6/dir7/dir8', 3);
-                expect(file).to.equal(null);
-                expect(config).to.equal(null);
+                expect(file).toBe(null);
+                expect(config).toBe(null);
             });
         });
 
         describe('edge cases...', () => {
             it('should return null when the path is empty', () => {
                 const { file, config } = findBabelConfig.sync('');
-                expect(file).to.equal(null);
-                expect(config).to.equal(null);
+                expect(file).toBe(null);
+                expect(config).toBe(null);
             });
 
             it('should return null when no config is found until / is reached', () => {
                 const { file, config } = findBabelConfig.sync('/sth/else/that/doesnt/exist');
-                expect(file).to.equal(null);
-                expect(config).to.equal(null);
+                expect(file).toBe(null);
+                expect(config).toBe(null);
             });
         });
     });
