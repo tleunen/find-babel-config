@@ -1,8 +1,7 @@
 {
-    "extends": "airbnb-base",
-    "rules": {
-        "comma-dangle": 0,
-        "indent": [2, 4, {"SwitchCase": 1}],
-        "max-len": 0,
-    }
+  "root": true,
+  "extends": "tleunen",
+  "parserOptions": {
+    "sourceType": "module"
+  }
 }

@@ -21,7 +21,7 @@ function asyncFind(resolve, dir, depth) {
                 if (!err) {
                     resolve({
                         file: babelrc,
-                        config: JSON5.parse(data)
+                        config: JSON5.parse(data),
                     });
                 }
             });
@@ -37,7 +37,7 @@ function asyncFind(resolve, dir, depth) {
                         if (packageJson.babel) {
                             resolve({
                                 file: packageFile,
-                                config: packageJson.babel
+                                config: packageJson.babel,
                             });
                         }
                     });
@@ -89,7 +89,7 @@ module.exports.sync = function findBabelConfigSync(start, depth = INFINITY) {
             const babelrcContent = fs.readFileSync(babelrc, 'utf8');
             return {
                 file: babelrc,
-                config: JSON5.parse(babelrcContent)
+                config: JSON5.parse(babelrcContent),
             };
         }
 
@@ -100,7 +100,7 @@ module.exports.sync = function findBabelConfigSync(start, depth = INFINITY) {
             if (packageJson.babel) {
                 return {
                     file: packageFile,
-                    config: packageJson.babel
+                    config: packageJson.babel,
                 };
             }
         }
