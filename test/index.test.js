@@ -4,7 +4,7 @@ const findBabelConfig = require('../src');
 
 describe('find-babel-config', () => {
     describe('async', () => {
-        describe('babelrc', () => {
+        describe('.babelrc', () => {
             it('should return the config in the direct directory', () =>
                 findBabelConfig('test/data/babelrc').then(({ file, config }) => {
                     expect(file).toBe(path.join(process.cwd(), 'test/data/babelrc/.babelrc'));
@@ -22,6 +22,29 @@ describe('find-babel-config', () => {
             it('should return the first config found in the parents', () =>
                 findBabelConfig('test/data/babelrc/dir1/dir2/dir3/dir4/dir5').then(({ file, config }) => {
                     expect(file).toBe(path.join(process.cwd(), 'test/data/babelrc/dir1/dir2/dir3/.babelrc'));
+                    expect(config).toEqual({ presets: ['fake-preset-dir3-babelrc'] });
+                }),
+            );
+        });
+
+        describe('.babelrc.js', () => {
+            it('should return the config in the direct directory', () =>
+                findBabelConfig('test/data/babelrcjs').then(({ file, config }) => {
+                    expect(file).toBe(path.join(process.cwd(), 'test/data/babelrcjs/.babelrc.js'));
+                    expect(config).toEqual({ presets: ['fake-preset-babelrc'] });
+                }),
+            );
+
+            it('should return the config in the parent directory', () =>
+                findBabelConfig(path.join(process.cwd(), 'test/data/babelrcjs/dir1')).then(({ file, config }) => {
+                    expect(file).toBe(path.join(process.cwd(), 'test/data/babelrcjs/.babelrc.js'));
+                    expect(config).toEqual({ presets: ['fake-preset-babelrc'] });
+                }),
+            );
+
+            it('should return the first config found in the parents', () =>
+                findBabelConfig('test/data/babelrcjs/dir1/dir2/dir3/dir4/dir5').then(({ file, config }) => {
+                    expect(file).toBe(path.join(process.cwd(), 'test/data/babelrcjs/dir1/dir2/dir3/.babelrc.js'));
                     expect(config).toEqual({ presets: ['fake-preset-dir3-babelrc'] });
                 }),
             );
@@ -114,7 +137,7 @@ describe('find-babel-config', () => {
     });
 
     describe('sync', () => {
-        describe('babelrc', () => {
+        describe('.babelrc', () => {
             it('should return the config in the specified directory', () => {
                 const { file, config } = findBabelConfig.sync('test/data/babelrc');
                 expect(file).toBe(path.join(process.cwd(), 'test/data/babelrc/.babelrc'));
@@ -133,6 +156,27 @@ describe('find-babel-config', () => {
                 expect(config).toEqual({ presets: ['fake-preset-dir3-babelrc'] });
             });
         });
+
+        describe('.babelrc.js', () => {
+            it('should return the config in the specified directory', () => {
+                const { file, config } = findBabelConfig.sync('test/data/babelrcjs');
+                expect(file).toBe(path.join(process.cwd(), 'test/data/babelrcjs/.babelrc.js'));
+                expect(config).toEqual({ presets: ['fake-preset-babelrc'] });
+            });
+
+            it('should return the config in the parent directory', () => {
+                const { file, config } = findBabelConfig.sync(path.join(process.cwd(), 'test/data/babelrcjs/dir1'));
+                expect(file).toBe(path.join(process.cwd(), 'test/data/babelrcjs/.babelrc.js'));
+                expect(config).toEqual({ presets: ['fake-preset-babelrc'] });
+            });
+
+            it('should return the first config found in the parents', () => {
+                const { file, config } = findBabelConfig.sync('test/data/babelrcjs/dir1/dir2/dir3/dir4/dir5');
+                expect(file).toBe(path.join(process.cwd(), 'test/data/babelrcjs/dir1/dir2/dir3/.babelrc.js'));
+                expect(config).toEqual({ presets: ['fake-preset-dir3-babelrc'] });
+            });
+        });
+
 
         describe('package.json', () => {
             it('should return the config in the specified directory', () => {
