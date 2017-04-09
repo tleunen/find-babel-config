@@ -24,13 +24,13 @@
     "path-exists": "^3.0.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.23.0",
+    "babel-cli": "^6.24.1",
     "babel-jest": "^19.0.0",
-    "babel-preset-es2015": "^6.22.0",
-    "eslint": "^3.16.0",
-    "eslint-config-tleunen": "^1.1.1",
+    "babel-preset-env": "^1.3.3",
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb-base": "^11.1.3",
     "eslint-plugin-import": "^2.2.0",
-    "jest": "^19.0.0",
+    "jest": "^19.0.2",
     "standard-version": "^4.0.0"
   },
   "scripts": {
@@ -52,7 +52,8 @@
   "greenkeeper": {
     "ignore": [
       "eslint",
-      "eslint-plugin-import"
+      "eslint-plugin-import",
+      "babel-jest"
     ]
   }
 }
