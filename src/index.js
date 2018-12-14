@@ -6,6 +6,7 @@ const pathExists = require('path-exists');
 const INFINITY = 1 / 0;
 const BABELRC_FILENAME = '.babelrc';
 const BABELRC_JS_FILENAME = '.babelrc.js';
+const BABEL_CONFIG_JS_FILENAME = 'babel.config.js';
 const PACKAGE_FILENAME = 'package.json';
 
 const nullConf = { file: null, config: null };
@@ -13,6 +14,11 @@ const nullConf = { file: null, config: null };
 function getBabelJsConfig(file) {
     // eslint-disable-next-line global-require, import/no-dynamic-require
     const configModule = require(file);
+
+    if (typeof configModule === 'function') {
+        return configModule();
+    }
+
     // eslint-disable-next-line no-underscore-dangle
     return configModule && configModule.__esModule ? configModule.default : configModule;
 }
@@ -74,6 +80,22 @@ function asyncFind(resolve, dir, depth) {
     })
     .then((exists) => {
         if (!exists) {
+            const babelConfigJSrc = path.join(dir, BABEL_CONFIG_JS_FILENAME);
+            return pathExists(babelConfigJSrc).then((ex) => {
+                if (ex) {
+                    const config = getBabelJsConfig(babelConfigJSrc);
+                    resolve({
+                        file: babelConfigJSrc,
+                        config,
+                    });
+                }
+            });
+        }
+        return exists;
+    })
+
+    .then((exists) => {
+        if (!exists) {
             const nextDir = path.dirname(dir);
             if (nextDir === dir) {
                 resolve(nullConf);
@@ -125,6 +147,15 @@ module.exports.sync = function findBabelConfigSync(start, depth = INFINITY) {
             const config = getBabelJsConfig(babelJSrc);
             return {
                 file: babelJSrc,
+                config,
+            };
+        }
+
+        const babelConfigJSrc = path.join(dir, BABEL_CONFIG_JS_FILENAME);
+        if (pathExists.sync(babelConfigJSrc)) {
+            const config = getBabelJsConfig(babelConfigJSrc);
+            return {
+                file: babelConfigJSrc,
                 config,
             };
         }
