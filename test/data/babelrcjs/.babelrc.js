@@ -1,3 +1,3 @@
 module.exports = {
-  "presets": ["fake-preset-babelrc"]
+  "presets": ["@babel/preset-env"]
 }

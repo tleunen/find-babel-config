@@ -1,3 +1,3 @@
 module.exports = {
-  "presets": ["fake-preset-dir3-babelrc"]
+  "plugins": ['@babel/plugin-transform-arrow-functions']
 }
