@@ -31,84 +31,84 @@ function asyncFind(resolve, dir, depth) {
 
     const babelrc = path.join(dir, BABELRC_FILENAME);
     return pathExists(babelrc)
-    .then((exists) => {
-        if (exists) {
-            fs.readFile(babelrc, 'utf8', (err, data) => {
-                if (!err) {
-                    resolve({
-                        file: babelrc,
-                        config: JSON5.parse(data),
-                    });
-                }
-            });
-        }
-        return exists;
-    })
-    .then((exists) => {
-        if (!exists) {
-            const babelJSrc = path.join(dir, BABELRC_JS_FILENAME);
-            return pathExists(babelJSrc).then((ex) => {
-                if (ex) {
-                    const config = getBabelJsConfig(babelJSrc);
-                    resolve({
-                        file: babelJSrc,
-                        config,
-                    });
-                }
-            });
-        }
-        return exists;
-    })
-    .then((exists) => {
-        if (!exists) {
-            const packageFile = path.join(dir, PACKAGE_FILENAME);
-            return pathExists(packageFile).then((ex) => {
-                if (ex) {
-                    fs.readFile(packageFile, 'utf8', (err, data) => {
-                        const packageJson = JSON.parse(data);
-                        if (packageJson.babel) {
-                            resolve({
-                                file: packageFile,
-                                config: packageJson.babel,
-                            });
-                        }
-                    });
-                }
-            });
-        }
-        return exists;
-    })
-    .then((exists) => {
-        if (!exists) {
-            const babelConfigJSrc = path.join(dir, BABEL_CONFIG_JS_FILENAME);
-            return pathExists(babelConfigJSrc).then((ex) => {
-                if (ex) {
-                    const config = getBabelJsConfig(babelConfigJSrc);
-                    resolve({
-                        file: babelConfigJSrc,
-                        config,
-                    });
-                }
-            });
-        }
-        return exists;
-    })
-
-    .then((exists) => {
-        if (!exists) {
-            const nextDir = path.dirname(dir);
-            if (nextDir === dir) {
-                resolve(nullConf);
-            } else {
-                asyncFind(resolve, nextDir, depth - 1);
+        .then((exists) => {
+            if (exists) {
+                fs.readFile(babelrc, 'utf8', (err, data) => {
+                    if (!err) {
+                        resolve({
+                            file: babelrc,
+                            config: JSON5.parse(data),
+                        });
+                    }
+                });
             }
-        }
-    });
+            return exists;
+        })
+        .then((exists) => {
+            if (!exists) {
+                const babelJSrc = path.join(dir, BABELRC_JS_FILENAME);
+                return pathExists(babelJSrc).then((ex) => {
+                    if (ex) {
+                        const config = getBabelJsConfig(babelJSrc);
+                        resolve({
+                            file: babelJSrc,
+                            config,
+                        });
+                    }
+                });
+            }
+            return exists;
+        })
+        .then((exists) => {
+            if (!exists) {
+                const packageFile = path.join(dir, PACKAGE_FILENAME);
+                return pathExists(packageFile).then((ex) => {
+                    if (ex) {
+                        fs.readFile(packageFile, 'utf8', (err, data) => {
+                            const packageJson = JSON.parse(data);
+                            if (packageJson.babel) {
+                                resolve({
+                                    file: packageFile,
+                                    config: packageJson.babel,
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+            return exists;
+        })
+        .then((exists) => {
+            if (!exists) {
+                const babelConfigJSrc = path.join(dir, BABEL_CONFIG_JS_FILENAME);
+                return pathExists(babelConfigJSrc).then((ex) => {
+                    if (ex) {
+                        const config = getBabelJsConfig(babelConfigJSrc);
+                        resolve({
+                            file: babelConfigJSrc,
+                            config,
+                        });
+                    }
+                });
+            }
+            return exists;
+        })
+
+        .then((exists) => {
+            if (!exists) {
+                const nextDir = path.dirname(dir);
+                if (nextDir === dir) {
+                    resolve(nullConf);
+                } else {
+                    asyncFind(resolve, nextDir, depth - 1);
+                }
+            }
+        });
 }
 
 module.exports = function findBabelConfig(start, depth = INFINITY) {
     if (!start) {
-        return new Promise(resolve => resolve(nullConf));
+        return new Promise((resolve) => resolve(nullConf));
     }
 
     const dir = path.isAbsolute(start)
@@ -131,7 +131,6 @@ module.exports.sync = function findBabelConfigSync(start, depth = INFINITY) {
         : path.join(process.cwd(), start);
     let loopLeft = depth;
 
-    // eslint-disable-next-line no-cond-assign
     do {
         const babelrc = path.join(dir, BABELRC_FILENAME);
         if (pathExists.sync(babelrc)) {
@@ -177,6 +176,7 @@ module.exports.sync = function findBabelConfigSync(start, depth = INFINITY) {
         }
 
         loopLeft -= 1;
+    // eslint-disable-next-line no-cond-assign
     } while (dir !== (dir = path.dirname(dir)));
 
     return nullConf;
