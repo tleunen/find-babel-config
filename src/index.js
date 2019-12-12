@@ -61,6 +61,21 @@ function asyncFind(resolve, dir, depth) {
         })
         .then((exists) => {
             if (!exists) {
+                const babelConfigJSrc = path.join(dir, BABEL_CONFIG_JS_FILENAME);
+                return pathExists(babelConfigJSrc).then((ex) => {
+                    if (ex) {
+                        const config = getBabelJsConfig(babelConfigJSrc);
+                        resolve({
+                            file: babelConfigJSrc,
+                            config,
+                        });
+                    }
+                });
+            }
+            return exists;
+        })
+        .then((exists) => {
+            if (!exists) {
                 const packageFile = path.join(dir, PACKAGE_FILENAME);
                 return pathExists(packageFile).then((ex) => {
                     if (ex) {
@@ -72,21 +87,6 @@ function asyncFind(resolve, dir, depth) {
                                     config: packageJson.babel,
                                 });
                             }
-                        });
-                    }
-                });
-            }
-            return exists;
-        })
-        .then((exists) => {
-            if (!exists) {
-                const babelConfigJSrc = path.join(dir, BABEL_CONFIG_JS_FILENAME);
-                return pathExists(babelConfigJSrc).then((ex) => {
-                    if (ex) {
-                        const config = getBabelJsConfig(babelConfigJSrc);
-                        resolve({
-                            file: babelConfigJSrc,
-                            config,
                         });
                     }
                 });
