@@ -1,6 +1,21 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [2.0.0](https://github.com/tleunen/find-babel-config/compare/v1.2.0...v2.0.0) (2023-01-09)
+
+
+### ⚠ BREAKING CHANGES
+
+* The order or config file lookup is ".babelrc, .babelrc.js, babel.config.js, package.json"
+* Node 8 is the minimum supported version
+
+### Bug Fixes
+
+* Fix order or config file lookup to be the same in sync and async functions ([#38](https://github.com/tleunen/find-babel-config/issues/38)) ([4fde4bb](https://github.com/tleunen/find-babel-config/commit/4fde4bbe9afec0d9ecc413d26c88d94fef33848f))
+
+
+* Update dependencies ([#37](https://github.com/tleunen/find-babel-config/issues/37)) ([4198a93](https://github.com/tleunen/find-babel-config/commit/4198a93f68cda2a1d9004d542fb0435df4065615))
 
 <a name="1.2.0"></a>
 # [1.2.0](https://github.com/tleunen/find-babel-config/compare/v1.1.0...v1.2.0) (2019-03-04)
