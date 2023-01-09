@@ -7,6 +7,7 @@ const INFINITY = 1 / 0;
 const BABELRC_FILENAME = '.babelrc';
 const BABELRC_JS_FILENAME = '.babelrc.js';
 const BABEL_CONFIG_JS_FILENAME = 'babel.config.js';
+const BABEL_CONFIG_JSON_FILENAME = 'babel.config.json';
 const PACKAGE_FILENAME = 'package.json';
 
 const nullConf = { file: null, config: null };
@@ -68,6 +69,24 @@ function asyncFind(resolve, dir, depth) {
                         resolve({
                             file: babelConfigJSrc,
                             config,
+                        });
+                    }
+                });
+            }
+            return exists;
+        })
+        .then((exists) => {
+            if (!exists) {
+                const babelConfigJsonSrc = path.join(dir, BABEL_CONFIG_JSON_FILENAME);
+                return pathExists(babelConfigJsonSrc).then((ex) => {
+                    if (ex) {
+                        fs.readFile(babelConfigJsonSrc, 'utf8', (err, data) => {
+                            if (!err) {
+                                resolve({
+                                    file: babelConfigJsonSrc,
+                                    config: JSON5.parse(data),
+                                });
+                            }
                         });
                     }
                 });
@@ -156,6 +175,15 @@ module.exports.sync = function findBabelConfigSync(start, depth = INFINITY) {
             return {
                 file: babelConfigJSrc,
                 config,
+            };
+        }
+
+        const babelConfigJsonSrc = path.join(dir, BABEL_CONFIG_JSON_FILENAME);
+        if (pathExists.sync(babelConfigJsonSrc)) {
+            const babelConfigContent = fs.readFileSync(babelConfigJsonSrc, 'utf8');
+            return {
+                file: babelConfigJsonSrc,
+                config: JSON5.parse(babelConfigContent),
             };
         }
 
