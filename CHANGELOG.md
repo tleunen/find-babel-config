@@ -7,8 +7,8 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### ⚠ BREAKING CHANGES
 
-* The order or config file lookup is ".babelrc, .babelrc.js, babel.config.js, package.json"
-* Node 8 is the minimum supported version
+* The order or config file lookup is ".babelrc, .babelrc.js, babel.config.js, babel.config.json, package.json"
+* Node 16 is the minimum supported version
 
 ### Bug Fixes
 
