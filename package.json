@@ -8,7 +8,7 @@
     "url": "https://github.com/tleunen/find-babel-config.git"
   },
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=16.0.0"
   },
   "author": "Tommy Leunen <tommy.leunen@gmail.com> (http://tommyleunen.com)",
   "license": "MIT",
