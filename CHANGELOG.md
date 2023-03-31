@@ -7,12 +7,12 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### ⚠ BREAKING CHANGES
 
-* The order or config file lookup is ".babelrc, .babelrc.js, babel.config.js, babel.config.json, package.json"
+* The order of config file lookup is ".babelrc, .babelrc.js, babel.config.js, babel.config.json, package.json"
 * Node 16 is the minimum supported version
 
 ### Bug Fixes
 
-* Fix order or config file lookup to be the same in sync and async functions ([#38](https://github.com/tleunen/find-babel-config/issues/38)) ([4fde4bb](https://github.com/tleunen/find-babel-config/commit/4fde4bbe9afec0d9ecc413d26c88d94fef33848f))
+* Fix order of config file lookup to be the same in sync and async functions ([#38](https://github.com/tleunen/find-babel-config/issues/38)) ([4fde4bb](https://github.com/tleunen/find-babel-config/commit/4fde4bbe9afec0d9ecc413d26c88d94fef33848f))
 
 
 * Update dependencies ([#37](https://github.com/tleunen/find-babel-config/issues/37)) ([4198a93](https://github.com/tleunen/find-babel-config/commit/4198a93f68cda2a1d9004d542fb0435df4065615))
