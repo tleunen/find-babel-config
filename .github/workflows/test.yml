@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x, 18.x, 19.x]
+        node-version: [18.x, 20.x, 21.x]
 
     steps:
       - uses: actions/checkout@v1
@@ -20,11 +20,11 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: yarn install, lint and test
+      - name: npm ci, lint and test
         run: |
-            yarn install
-            yarn run lint
-            yarn run test:coverage
+            npm ci
+            npm run lint
+            npm run test:coverage
       - name: coverage
         uses: codecov/codecov-action@v1.0.5
         if: matrix.node-version == '13.x'

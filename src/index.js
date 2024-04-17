@@ -24,7 +24,6 @@ function getBabelJsConfig(file) {
     return configModule && configModule.__esModule ? configModule.default : configModule;
 }
 
-
 function asyncFind(resolve, dir, depth) {
     if (depth < 0) {
         return resolve(nullConf);
@@ -138,7 +137,6 @@ module.exports = function findBabelConfig(start, depth = INFINITY) {
         asyncFind(resolve, dir, depth);
     });
 };
-
 
 module.exports.sync = function findBabelConfigSync(start, depth = INFINITY) {
     if (!start) {
