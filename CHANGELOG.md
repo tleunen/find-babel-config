@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.1.1](https://github.com/tleunen/find-babel-config/compare/v2.1.0...v2.1.1) (2024-04-17)
+
+
+### Bug Fixes
+
+* Add node16 support back ([#76](https://github.com/tleunen/find-babel-config/issues/76)) ([97c759a](https://github.com/tleunen/find-babel-config/commit/97c759a422df76208c5c041b9e2883aa6ba38e57))
+
 ## [2.1.0](https://github.com/tleunen/find-babel-config/compare/v2.0.0...v2.1.0) (2024-04-17)
 
 ## [2.0.0](https://github.com/tleunen/find-babel-config/compare/v1.2.0...v2.0.0) (2023-01-09)
