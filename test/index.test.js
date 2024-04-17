@@ -160,7 +160,6 @@ describe('find-babel-config', () => {
             });
         });
 
-
         describe('package.json', () => {
             it('should return the config in the specified directory', () => {
                 const { file, config } = findBabelConfig.sync('test/data/packagejson');
