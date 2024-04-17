@@ -1,14 +1,24 @@
 const path = require('path');
 const fs = require('fs');
+const fsAsync = require('fs').promises;
 const JSON5 = require('json5');
 const pathExists = require('path-exists');
 
 const INFINITY = 1 / 0;
-const BABELRC_FILENAME = '.babelrc';
-const BABELRC_JS_FILENAME = '.babelrc.js';
-const BABEL_CONFIG_JS_FILENAME = 'babel.config.js';
-const BABEL_CONFIG_JSON_FILENAME = 'babel.config.json';
-const PACKAGE_FILENAME = 'package.json';
+
+const babelFiles= [
+    '.babelrc',
+    '.babelrc.js',
+    'babel.config.js',
+    'babel.config.json',
+    'babel.config.cjs',
+    '.babelrc.cjs',
+    '.babelrc.json',
+    'babel.config.mjs',
+    '.babelrc.mjs',
+    // always at the end
+    'package.json',
+];
 
 const nullConf = { file: null, config: null };
 
@@ -24,104 +34,42 @@ function getBabelJsConfig(file) {
     return configModule && configModule.__esModule ? configModule.default : configModule;
 }
 
-function asyncFind(resolve, dir, depth) {
+async function asyncFind(dir, depth) {
     if (depth < 0) {
-        return resolve(nullConf);
+        return nullConf;
     }
 
-    const babelrc = path.join(dir, BABELRC_FILENAME);
-    return pathExists(babelrc)
-        .then((exists) => {
-            if (exists) {
-                fs.readFile(babelrc, 'utf8', (err, data) => {
-                    if (!err) {
-                        resolve({
-                            file: babelrc,
-                            config: JSON5.parse(data),
-                        });
-                    }
-                });
-            }
-            return exists;
-        })
-        .then((exists) => {
-            if (!exists) {
-                const babelJSrc = path.join(dir, BABELRC_JS_FILENAME);
-                return pathExists(babelJSrc).then((ex) => {
-                    if (ex) {
-                        const config = getBabelJsConfig(babelJSrc);
-                        resolve({
-                            file: babelJSrc,
-                            config,
-                        });
-                    }
-                });
-            }
-            return exists;
-        })
-        .then((exists) => {
-            if (!exists) {
-                const babelConfigJSrc = path.join(dir, BABEL_CONFIG_JS_FILENAME);
-                return pathExists(babelConfigJSrc).then((ex) => {
-                    if (ex) {
-                        const config = getBabelJsConfig(babelConfigJSrc);
-                        resolve({
-                            file: babelConfigJSrc,
-                            config,
-                        });
-                    }
-                });
-            }
-            return exists;
-        })
-        .then((exists) => {
-            if (!exists) {
-                const babelConfigJsonSrc = path.join(dir, BABEL_CONFIG_JSON_FILENAME);
-                return pathExists(babelConfigJsonSrc).then((ex) => {
-                    if (ex) {
-                        fs.readFile(babelConfigJsonSrc, 'utf8', (err, data) => {
-                            if (!err) {
-                                resolve({
-                                    file: babelConfigJsonSrc,
-                                    config: JSON5.parse(data),
-                                });
-                            }
-                        });
-                    }
-                });
-            }
-            return exists;
-        })
-        .then((exists) => {
-            if (!exists) {
-                const packageFile = path.join(dir, PACKAGE_FILENAME);
-                return pathExists(packageFile).then((ex) => {
-                    if (ex) {
-                        fs.readFile(packageFile, 'utf8', (err, data) => {
-                            const packageJson = JSON.parse(data);
-                            if (packageJson.babel) {
-                                resolve({
-                                    file: packageFile,
-                                    config: packageJson.babel,
-                                });
-                            }
-                        });
-                    }
-                });
-            }
-            return exists;
-        })
+    for (const babelFile of babelFiles) {
+        const file = path.join(dir, babelFile);
 
-        .then((exists) => {
-            if (!exists) {
-                const nextDir = path.dirname(dir);
-                if (nextDir === dir) {
-                    resolve(nullConf);
-                } else {
-                    asyncFind(resolve, nextDir, depth - 1);
-                }
+        const exists = await pathExists(file)
+        if (exists) {
+            let config;
+            if (file.endsWith('js')) {
+                config = getBabelJsConfig(file);
+            } else if (babelFile === 'package.json') {
+                const content = await fsAsync.readFile(file, 'utf8');
+                config = JSON5.parse(content).babel;
+            } else {
+                const content = await fsAsync.readFile(file, 'utf8');
+                config = JSON5.parse(content);
             }
-        });
+
+            if (config != null) {
+                return {
+                    file,
+                    config,
+                };
+            }
+        }
+    }
+
+    const nextDir = path.dirname(dir);
+    if (nextDir === dir) {
+        return nullConf;
+    }
+
+    return asyncFind(nextDir, depth - 1);
 }
 
 module.exports = function findBabelConfig(start, depth = INFINITY) {
@@ -134,7 +82,7 @@ module.exports = function findBabelConfig(start, depth = INFINITY) {
         : path.join(process.cwd(), start);
 
     return new Promise((resolve) => {
-        asyncFind(resolve, dir, depth);
+        resolve(asyncFind(dir, depth));
     });
 };
 
@@ -149,51 +97,26 @@ module.exports.sync = function findBabelConfigSync(start, depth = INFINITY) {
     let loopLeft = depth;
 
     do {
-        const babelrc = path.join(dir, BABELRC_FILENAME);
-        if (pathExists.sync(babelrc)) {
-            const babelrcContent = fs.readFileSync(babelrc, 'utf8');
-            return {
-                file: babelrc,
-                config: JSON5.parse(babelrcContent),
-            };
-        }
+        for (const babelFile of babelFiles) {
+            const file = path.join(dir, babelFile);
+            if (pathExists.sync(file)) {
+                let config;
+                if (file.endsWith('js')) {
+                    config = getBabelJsConfig(file);
+                } else if (babelFile === 'package.json') {
+                    const content = fs.readFileSync(file, 'utf8');
+                    config = JSON5.parse(content).babel;
+                } else {
+                    const content = fs.readFileSync(file, 'utf8');
+                    config = JSON5.parse(content);
+                }
 
-        const babelJSrc = path.join(dir, BABELRC_JS_FILENAME);
-        if (pathExists.sync(babelJSrc)) {
-            const config = getBabelJsConfig(babelJSrc);
-            return {
-                file: babelJSrc,
-                config,
-            };
-        }
-
-        const babelConfigJSrc = path.join(dir, BABEL_CONFIG_JS_FILENAME);
-        if (pathExists.sync(babelConfigJSrc)) {
-            const config = getBabelJsConfig(babelConfigJSrc);
-            return {
-                file: babelConfigJSrc,
-                config,
-            };
-        }
-
-        const babelConfigJsonSrc = path.join(dir, BABEL_CONFIG_JSON_FILENAME);
-        if (pathExists.sync(babelConfigJsonSrc)) {
-            const babelConfigContent = fs.readFileSync(babelConfigJsonSrc, 'utf8');
-            return {
-                file: babelConfigJsonSrc,
-                config: JSON5.parse(babelConfigContent),
-            };
-        }
-
-        const packageFile = path.join(dir, PACKAGE_FILENAME);
-        if (pathExists.sync(packageFile)) {
-            const packageContent = fs.readFileSync(packageFile, 'utf8');
-            const packageJson = JSON.parse(packageContent);
-            if (packageJson.babel) {
-                return {
-                    file: packageFile,
-                    config: packageJson.babel,
-                };
+                if (config != null) {
+                    return {
+                        file,
+                        config,
+                    };
+                }
             }
         }
 
@@ -202,7 +125,6 @@ module.exports.sync = function findBabelConfigSync(start, depth = INFINITY) {
         }
 
         loopLeft -= 1;
-    // eslint-disable-next-line no-cond-assign
     } while (dir !== (dir = path.dirname(dir)));
 
     return nullConf;
