@@ -1,6 +1,6 @@
 {
   "name": "find-babel-config",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "main": "lib/index.js",
   "description": "Find the closest babel config based on a directory",
   "repository": {
