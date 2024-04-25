@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.2.2"></a>
+## [1.2.2](https://github.com/tleunen/find-babel-config/compare/v1.2.1...v1.2.2) (2024-04-25)
+
+
+### Bug Fixes
+
+* Rollback json5 to v1.0.2 to fix node4 support ([2a4d0a8](https://github.com/tleunen/find-babel-config/commit/2a4d0a8))
+
+
+
 <a name="1.2.1"></a>
 ## [1.2.1](https://github.com/tleunen/find-babel-config/compare/v1.2.0...v1.2.1) (2024-04-17)
 
