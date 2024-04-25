@@ -20,7 +20,7 @@
     "babelrc"
   ],
   "dependencies": {
-    "json5": "^2.2.3",
+    "json5": "^1.0.2",
     "path-exists": "^3.0.0"
   },
   "devDependencies": {
