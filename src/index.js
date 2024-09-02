@@ -33,7 +33,7 @@ function asyncFind(resolve, dir, depth) {
     if (fs.existsSync(babelrc)) {
         return fs.readFile(babelrc, 'utf8', (err, data) => {
             if (!err) {
-                return resolve({
+                resolve({
                     file: babelrc,
                     config: JSON5.parse(data),
                 });
@@ -62,7 +62,7 @@ function asyncFind(resolve, dir, depth) {
     if (fs.existsSync(babelConfigJsonSrc)) {
         return fs.readFile(babelConfigJsonSrc, 'utf8', (err, data) => {
             if (!err) {
-                return resolve({
+                resolve({
                     file: babelConfigJsonSrc,
                     config: JSON5.parse(data),
                 });
@@ -75,7 +75,7 @@ function asyncFind(resolve, dir, depth) {
         return fs.readFile(packageFile, 'utf8', (err, data) => {
             const packageJson = JSON.parse(data);
             if (packageJson.babel) {
-                return resolve({
+                resolve({
                     file: packageFile,
                     config: packageJson.babel,
                 });
