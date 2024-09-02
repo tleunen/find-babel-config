@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.1.2](https://github.com/tleunen/find-babel-config/compare/v2.1.1...v2.1.2) (2024-09-02)
+
+
+### Bug Fixes
+
+* replace path-exists for native ([#77](https://github.com/tleunen/find-babel-config/issues/77)) ([e7fd92f](https://github.com/tleunen/find-babel-config/commit/e7fd92fed57f2ec75bfd5279adf443f68b5f93eb))
+
 ### [2.1.1](https://github.com/tleunen/find-babel-config/compare/v2.1.0...v2.1.1) (2024-04-17)
 
 
