@@ -17,8 +17,7 @@
     "babelrc"
   ],
   "dependencies": {
-    "json5": "^2.2.3",
-    "path-exists": "^4.0.0"
+    "json5": "^2.2.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.24.1",
