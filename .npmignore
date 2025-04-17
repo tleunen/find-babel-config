@@ -1,4 +1,7 @@
 src/
 test/
 coverage/
+.circleci/
 .nyc_output
+.eslintrc
+.babelrc
